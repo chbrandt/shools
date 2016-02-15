@@ -1,0 +1,7 @@
+export SCRATCH="/scratch/c.brandt"
+export RESOURCES="$HOME/Resources"
+export PRODUCTS="$HOME/Products"
+export OBSID="00080359005"
+export POS_RA="05 34 31.94"
+export POS_DEC="+22 00 52.2"
+export DMODE="WT"
