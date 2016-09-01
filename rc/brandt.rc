@@ -1,0 +1,53 @@
+# Resources
+RESOURCES="${HOME}/fido"
+
+# Wikis
+WIKIS="${RESOURCES}/wikis"
+
+# Repositories
+REPOS="${RESOURCES}/repos"
+
+# Python notebooks
+NOTEBOOKS="${REPOS}/pynotes"
+
+# Data
+DATA="${RESOURCES}/Data"
+
+# ---
+
+# Docker-I
+DOCKERIRDIR="${REPOS}/docker_interface/run"
+
+export DOCKERIRDIR
+export PATH="${PATH}:${DOCKERIRDIR}/bin"
+
+# Git
+git_update(){
+    NAME=$(basename `git rev-parse --show-toplevel`)
+    echo -ne "Fetching $NAME .. "
+
+    git remote update > /dev/null 2>&1 || { echo "Failed"; exit 1; }
+
+    LOCAL=$(git rev-parse @)
+    REMOTE=$(git rev-parse @{u})
+    BASE=$(git merge-base @ @{u})
+
+    if [ $LOCAL = $REMOTE ]; then
+        echo "Up-to-date"
+    elif [ $LOCAL = $BASE ]; then
+        echo "Need to pull"
+    elif [ $REMOTE = $BASE ]; then
+        echo "Need to push"
+    else
+        echo "Diverged"
+    fi
+}
+
+git_update_repos(){
+    for d in $REPOS/*
+    do
+        [[ ! -d $d  ]] && continue
+        [[ ! -d "${d}/.git" ]] && continue
+        (cd $d && git_update)
+    done
+}
