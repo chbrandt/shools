@@ -33,13 +33,17 @@ git_check(){
     BASE=$(git merge-base @ @{u})
 
     if [ $LOCAL = $REMOTE ]; then
-        blue "Up-to-date"
+        text='Up-to-date'
+        blue "$text"
     elif [ $LOCAL = $BASE ]; then
-        yellow "Need to pull"
+        text='Get the updates (pull)'
+        purple "$text"
     elif [ $REMOTE = $BASE ]; then
-        yellow "Need to push"
+        text='Push modifications'
+        yellow "$text"
     else
-        red "Diverged"
+        text='Diverged'
+        red "$text"
     fi
 }
 
@@ -63,24 +67,30 @@ git_check_repos() {
 
 echo_color() {
   local color="$1"
-  local text="$2"
+  local text="${@:2}"
   echo -e "\033[${color}m${text}\033[0m"
 }
 
 blue() {
-    local blue=35
+    local blue='34'
     local text="$*"
     echo_color $blue $text
 }
 
 yellow() {
-    local yellow=33
+    local yellow='1;33'
     local text="$*"
     echo_color $yellow $text
 }
 
+purple() {
+    local purple='0;35'
+    local text="$*"
+    echo_color $purple $text
+}
+
 red() {
-    local red=31
+    local red='31'
     local text="$*"
     echo_color $red $text
 }
