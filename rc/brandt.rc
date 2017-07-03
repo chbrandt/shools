@@ -59,9 +59,10 @@ git_check_repo() {
 git_check_repos() {
     for d in `ls -1 $REPOS`
     do
-        [[ ! -d $d  ]] && continue
-        [[ ! -d "${d}/.git" ]] && continue
-        git_check_repo "$d"
+        local repo="${REPOS}/$d"
+        [[ ! -d $repo  ]] && continue
+        [[ ! -d "${repo}/.git" ]] && continue
+        git_check_repo "$repo"
     done
 }
 
