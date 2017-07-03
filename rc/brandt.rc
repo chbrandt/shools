@@ -118,14 +118,18 @@ ssh_joshua() {
 # export WIKIS="/Users/chbrandt/Estudos/Codigos/WIKIS"
 
 # Aliases
-alias ls='ls -G'
+# alias ls='ls -G'
+
+# alias docker_cleani='docker images | grep "<none>" | tr -s [[:blank:]] | cut -d" " -f3 | xargs docker rmi'
+# alias docker_clean='docker ps -a | cut -d" " -f1 | grep -v CONTAINER | xargs docker rm'
+# alias docker_stop='docker ps -a | cut -d" " -f1 | grep -v CONTAINER | xargs docker stop'
 
 docker_clean() {
-  docker ps -a | grep -v CONTAINER | awk '{print $1}' | xargs -n1 -I{} docker rm {}
+  docker ps -a | grep -v CONTAINER | awk '{print $1}' | xargs docker rm
 }
 
 docker_clean_images() {
-  docker images | grep '<none>' | awk '{print $3}' | xargs -n1 -I{} docker rmi {}
+  docker images | grep '<none>' | awk '{print $3}' | xargs docker rmi
 }
 
 # # Anaconda
