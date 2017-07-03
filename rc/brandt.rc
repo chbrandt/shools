@@ -16,38 +16,66 @@ DATA="${RESOURCES}/Data"
 # ---
 
 # Docker-I
-DOCKERIRDIR="${REPOS}/docker_interface/run"
+DOCKERIRDIR="${REPOS}/docker/docker_interface/run"
 
 export DOCKERIRDIR
 export PATH="${PATH}:${DOCKERIRDIR}/bin"
 
 # Git
-git_update(){
+git_check(){
     NAME=$(basename `git rev-parse --show-toplevel`)
-    echo -ne "Fetching $NAME .. "
+    printf "%-50s" "Fetching $NAME .. "
 
-    git remote update > /dev/null 2>&1 || { echo "Failed"; exit 1; }
+    git remote update > /dev/null 2>&1 || { red "Failed"; exit 1; }
 
     LOCAL=$(git rev-parse @)
     REMOTE=$(git rev-parse @{u})
     BASE=$(git merge-base @ @{u})
 
     if [ $LOCAL = $REMOTE ]; then
-        echo "Up-to-date"
+        blue "Up-to-date"
     elif [ $LOCAL = $BASE ]; then
-        echo "Need to pull"
+        yellow "Need to pull"
     elif [ $REMOTE = $BASE ]; then
-        echo "Need to push"
+        yellow "Need to push"
     else
-        echo "Diverged"
+        red "Diverged"
     fi
 }
 
-git_update_repos(){
-    for d in $REPOS/*
+git_check_repo(){
+    REPODIR="$1"
+    [[ -d $REPODIR ]] || return 1
+    [[ -d "${REPODIR}/.git" ]] || return 1
+    (
+        cd $REPODIR && git_check
+    )
+}
+
+git_check_repos(){
+    for d in `ls -1 $REPOS`
     do
         [[ ! -d $d  ]] && continue
         [[ ! -d "${d}/.git" ]] && continue
-        (cd $d && git_update)
+        git_check_repo "$d"
     done
 }
+
+function blue(){
+    blue=35
+    text="$*"
+    echo -e "\033[${blue}m${text}\033[0m"
+}
+
+function yellow(){
+    yellow=33
+    text="$*"
+    echo -e "\033[${blue}m${text}\033[0m"
+}
+
+function red(){
+    red=31
+    text="$*"
+    echo -e "\033[${red}m${text}\033[0m"
+}
+
