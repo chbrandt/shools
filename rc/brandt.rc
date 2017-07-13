@@ -1,17 +1,4 @@
-# Resources
-RESOURCES="${RESOURCES:-$HOME}"
-
-# Wikis
-WIKIS="${RESOURCES}/wikis"
-
-# Repositories
-REPOS="${RESOURCES}/repos"
-
-# Python notebooks
-NOTEBOOKS="${REPOS}/docdatpie"
-
-# Data
-DATA="${RESOURCES}/Data"
+source ~/env.rc
 
 # ---
 
