@@ -86,6 +86,10 @@ done < $LIST
 #
 [ "$CNT" -eq "0" ] && { echo "Empty list of observation?"; exit; }
 
+# NPROCS should not be bigger than CNT (and not zero)
+[[ "$NPROCS" -ge 1 ]] || NPROCS=1
+[[ "$NPROCS" -le "$CNT" ]] || NPROCS=$CNT
+
 # Start the queue of jobs..
 #
 PIDs=()
