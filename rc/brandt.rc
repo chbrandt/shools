@@ -1,3 +1,5 @@
+#source ~/env.rc
+
 # Resources
 RESOURCES="${RESOURCES:-$HOME}"
 
@@ -23,49 +25,50 @@ export PATH="${PATH}:${DOCKERIRDIR}/bin"
 
 # Git
 git_check(){
-    NAME=$(basename `git rev-parse --show-toplevel`)
-    BRANCH=$(git rev-parse --abbrev-ref HEAD)
-    printf "%-30s" "Fetching $NAME"
-    printf "%-20s" "[$BRANCH] .. "
+  NAME=$(basename `git rev-parse --show-toplevel`)
+  BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  printf "%-30s" "Fetching $NAME"
+  printf "%-20s" "[$BRANCH] .. "
 
-    git remote update > /dev/null 2>&1 || { red "Failed remote (repository)"; exit 1; }
-    git rev-parse @{u} > /dev/null 2>&1|| { red "Failed remote (branch)"; exit 1; }
-    
-    LOCAL=$(git rev-parse @)
-    REMOTE=$(git rev-parse @{u}) 
-    BASE=$(git merge-base @ @{u})
+  git remote update > /dev/null 2>&1 || { red "Failed remote (repository)"; exit 1; }
+  git rev-parse @{u} > /dev/null 2>&1|| { red "Failed remote (branch)"; exit 1; }
 
-    if [ $LOCAL = $REMOTE ]; then
-        text='Up-to-date'
-        blue "$text"
-    elif [ $LOCAL = $BASE ]; then
-        text='Get the updates (pull)'
-        purple "$text"
-    elif [ $REMOTE = $BASE ]; then
-        text='Push modifications'
-        yellow "$text"
-    else
-        text='Diverged'
-        red "$text"
-    fi
+  LOCAL=$(git rev-parse @)
+  REMOTE=$(git rev-parse @{u})
+  BASE=$(git merge-base @ @{u})
+
+  if [ $LOCAL = $REMOTE ]; then
+    text='Up-to-date'
+    blue "$text"
+  elif [ $LOCAL = $BASE ]; then
+    text='Get the updates (pull)'
+    purple "$text"
+  elif [ $REMOTE = $BASE ]; then
+    text='Push modifications'
+    yellow "$text"
+  else
+    text='Diverged'
+    red "$text"
+  fi
 }
 
 git_check_repo() {
-    local REPODIR="$1"
-    [[ -d $REPODIR ]] || return 1
-    [[ -d "${REPODIR}/.git" ]] || return 1
-    (
-        cd $REPODIR && git_check
-    )
+  local REPODIR="$1"
+  [[ -d $REPODIR ]] || return 1
+  [[ -d "${REPODIR}/.git" ]] || return 1
+  (
+    cd $REPODIR && git_check
+  )
 }
 
 git_check_repos() {
-    for d in `ls -1 $REPOS`
-    do
-        [[ ! -d $d  ]] && continue
-        [[ ! -d "${d}/.git" ]] && continue
-        git_check_repo "$d"
-    done
+  for d in `ls -1 $REPOS`
+  do
+    local repo="${REPOS}/$d"
+    [[ ! -d $repo  ]] && continue
+    [[ ! -d "${repo}/.git" ]] && continue
+    git_check_repo "$repo"
+  done
 }
 
 echo_color() {
@@ -75,44 +78,44 @@ echo_color() {
 }
 
 blue() {
-    local blue='34'
-    local text="$*"
-    echo_color $blue $text
+  local blue='34'
+  local text="$*"
+  echo_color $blue $text
 }
 
 yellow() {
-    local yellow='1;33'
-    local text="$*"
-    echo_color $yellow $text
+  local yellow='1;33'
+  local text="$*"
+  echo_color $yellow $text
 }
 
 purple() {
-    local purple='0;35'
-    local text="$*"
-    echo_color $purple $text
+  local purple='0;35'
+  local text="$*"
+  echo_color $purple $text
 }
 
 red() {
-    local red='31'
-    local text="$*"
-    echo_color $red $text
+  local red='31'
+  local text="$*"
+  echo_color $red $text
 }
 
 # Automatically connect to eddie/joshua depending on the network I am (Sapienza/ASI)
 
 ssh_joshua() {
-    nc -z -G 1 joshua.icra.it 22 > /dev/null
+  nc -z -G 1 joshua.icra.it 22 > /dev/null
+  if [[ "$?" -eq "0" ]]; then
+    ssh joshua.icra.it
+  else
+    nc -z -G 1 eddie.icra.it 80 > /dev/null
     if [[ "$?" -eq "0" ]]; then
-        ssh joshua.icra.it
+      ssh -N -L 2222:joshua.icra.it:22 -p 80 eddie.icra.it
     else
-        nc -z -G 1 eddie.icra.it 80 > /dev/null
-        if [[ "$?" -eq "0" ]]; then
-            ssh -N -L 2222:joshua.icra.it:22 -p 80 eddie.icra.it
-        else
-            1>&2 echo "Nop! Neither 'joshua' nor 'eddie' are not available."
-            return 1
-        fi
+      1>&2 echo "Nop! Neither 'joshua' nor 'eddie' are not available."
+      return 1
     fi
+  fi
 }
 
 # export PATH="${HOME}/local/bin:$PATH"
@@ -122,6 +125,10 @@ ssh_joshua() {
 
 # Aliases
 alias ls='ls -G'
+
+# alias docker_cleani='docker images | grep "<none>" | tr -s [[:blank:]] | cut -d" " -f3 | xargs docker rmi'
+# alias docker_clean='docker ps -a | cut -d" " -f1 | grep -v CONTAINER | xargs docker rm'
+# alias docker_stop='docker ps -a | cut -d" " -f1 | grep -v CONTAINER | xargs docker stop'
 
 docker_clean() {
   docker ps -a | grep -v CONTAINER | awk '{print $1}' | xargs -n1 -I{} docker rm {}
