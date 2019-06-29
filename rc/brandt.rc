@@ -142,3 +142,12 @@ docker_clean_images() {
 # export PATH="/anaconda/bin:$PATH"
 #
 # export REPOS=/Users/chbrandt/Estudos/Codigos/REPOS
+
+function parse_git_branch {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  yellow "["${ref#refs/heads/}"]"
+}
+
+
+PS1="\$(parse_git_branch) $PS1"
+
