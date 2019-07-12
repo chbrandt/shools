@@ -154,6 +154,6 @@ function parse_git_branch {
   yellow "["${ref#refs/heads/}"]"
 }
 
-PS1=`green $PS1`
-PS1="\$(parse_git_branch) $PS1 "
+PS1="`green $PS1` "
+#PS1="\$(parse_git_branch) $PS1 "
 
