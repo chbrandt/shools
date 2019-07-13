@@ -84,9 +84,9 @@ blue() {
 }
 
 green() {
-  local yellow='1;32'
+  local green='1;32'
   local text="$*"
-  echo_color $yellow $text
+  echo_color $green $text
 }
 
 yellow() {
@@ -151,9 +151,10 @@ docker_clean_images() {
 
 function parse_git_branch {
   ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-  yellow "["${ref#refs/heads/}"]"
+  echo "${ref#refs/heads/}"
 }
 
+PS1='\h:\W\n\u\$ '
 PS1="`green $PS1` "
-#PS1="\$(parse_git_branch) $PS1 "
+PS1="[\$(parse_git_branch)] $PS1"
 
