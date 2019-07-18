@@ -130,7 +130,7 @@ ssh_joshua() {
 # export WIKIS="/Users/chbrandt/Estudos/Codigos/WIKIS"
 
 # Aliases
-alias ls='ls -G'
+alias ls='ls --color'
 
 # alias docker_cleani='docker images | grep "<none>" | tr -s [[:blank:]] | cut -d" " -f3 | xargs docker rmi'
 # alias docker_clean='docker ps -a | cut -d" " -f1 | grep -v CONTAINER | xargs docker rm'
@@ -154,7 +154,10 @@ function parse_git_branch {
   echo "${ref#refs/heads/}"
 }
 
-PS1='\h:\W\n\u\$ '
-PS1="`green $PS1` "
+ORIGINAL_ME=`whoami`
+
+#PS1='\h:\W\n\u\$ '
+PS1="`green '\h'`:`blue '\W'` `green '\u\$'` "
+#PS1="`green $PS1` "
 PS1="[\$(parse_git_branch)] $PS1"
 
