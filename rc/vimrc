@@ -1,0 +1,91 @@
+" Fisa-vim-config
+" http://fisadev.github.io/fisa-vim-config/
+" version: 8.3.1
+
+" ============================================================================
+" Vim-plug initialization
+" Avoid modify this section, unless you are very sure of what you are doing
+"
+let vim_plug_just_installed = 0
+let vim_plug_path = expand('~/.vim/autoload/plug.vim')
+if !filereadable(vim_plug_path)
+    echo "Installing Vim-plug..."
+    echo ""
+    silent !mkdir -p ~/.vim/autoload
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    let vim_plug_just_installed = 1
+endif
+"
+" manually load vim-plug the first time
+if vim_plug_just_installed
+    :execute 'source '.fnameescape(vim_plug_path)
+endif
+"
+" Obscure hacks done, you can now modify the rest of the .vimrc as you wish :)
+" ============================================================================
+
+
+" Active plugins
+" You can disable or add new ones here:
+
+" this needs to be here, so vim-plug knows we are declaring the plugins we
+" want to use
+call plug#begin('~/.vim/plugged')
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'davidhalter/jedi-vim'
+Plug 'scrooloose/nerdtree'
+Plug 'https://github.com/machakann/vim-sandwich.git'
+
+call plug#end()
+
+colorscheme desert "nice colorscheme (for now)
+set guioptions-=m  "menu bar
+set guioptions-=T  "toolbar
+set guioptions-=r  "right-hand scrollbar
+set guioptions-=L  "left-hand scrollbar
+
+" set a leader key
+let mapleader = ","
+
+" split navigations
+nnoremap <leader>j <C-W><C-J>
+nnoremap <leader>k <C-W><C-K>
+nnoremap <leader>l <C-W><C-L>
+nnoremap <leader>h <C-W><C-H>
+
+" make splits below and right
+set splitbelow
+set splitright
+
+set nocompatible
+
+set expandtab 
+set tabstop=4 
+set softtabstop=4 
+set shiftwidth=4 
+set textwidth=79 
+set autoindent
+set smarttab
+
+set encoding=utf-8
+
+set laststatus=2
+autocmd vimenter * NERDTree
+
+set hlsearch
+set incsearch
+
+set wrap
+set linebreak
+set breakindent
+
+set switchbuf=usetab,newtab
+
+augroup BgHighlight
+    autocmd!
+    autocmd WinEnter * set number
+    autocmd WinLeave * set nonumber
+augroup END
+
