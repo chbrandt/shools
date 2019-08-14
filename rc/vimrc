@@ -24,7 +24,6 @@ endif
 " Obscure hacks done, you can now modify the rest of the .vimrc as you wish :)
 " ============================================================================
 
-
 " Active plugins
 " You can disable or add new ones here:
 
@@ -37,10 +36,14 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'davidhalter/jedi-vim'
 Plug 'scrooloose/nerdtree'
 Plug 'https://github.com/machakann/vim-sandwich.git'
+Plug 'drewtempelmeyer/palenight.vim'
 
 call plug#end()
 
-colorscheme desert "nice colorscheme (for now)
+"colorscheme desert "nice colorscheme (for now)
+set background=dark
+colorscheme palenight
+
 set guioptions-=m  "menu bar
 set guioptions-=T  "toolbar
 set guioptions-=r  "right-hand scrollbar
