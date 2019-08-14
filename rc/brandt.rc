@@ -1,3 +1,7 @@
+#if [ `which nvim` ]; then
+#    alias vim='nvim'
+#fi
+
 #source ~/env.rc
 
 # Resources
