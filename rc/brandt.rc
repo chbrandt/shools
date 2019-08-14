@@ -124,17 +124,10 @@ ssh_joshua() {
   fi
 }
 
-# export PATH="${HOME}/local/bin:$PATH"
-# export DOCKERIRDIR="$HOME/Estudos/Codigos/REPOS/docker_interface/run"
-# export PATH="$PATH:$DOCKERIRDIR/bin"
-# export WIKIS="/Users/chbrandt/Estudos/Codigos/WIKIS"
+export PATH="${HOME}/local/bin:$PATH"
 
 # Aliases
-alias ls='ls --color'
-
-# alias docker_cleani='docker images | grep "<none>" | tr -s [[:blank:]] | cut -d" " -f3 | xargs docker rmi'
-# alias docker_clean='docker ps -a | cut -d" " -f1 | grep -v CONTAINER | xargs docker rm'
-# alias docker_stop='docker ps -a | cut -d" " -f1 | grep -v CONTAINER | xargs docker stop'
+alias ls='ls -G'
 
 docker_clean() {
   docker ps -a | grep -v CONTAINER | awk '{print $1}' | xargs -n1 -I{} docker rm {}
@@ -144,20 +137,11 @@ docker_clean_images() {
   docker images | grep '<none>' | awk '{print $3}' | xargs -n1 -I{} docker rmi {}
 }
 
-# # Anaconda
-# export PATH="/anaconda/bin:$PATH"
-#
-# export REPOS=/Users/chbrandt/Estudos/Codigos/REPOS
-
 function parse_git_branch {
   ref=$(git symbolic-ref HEAD 2> /dev/null) || return
   echo "${ref#refs/heads/}"
 }
 
-ORIGINAL_ME=`whoami`
-
-#PS1='\h:\W\n\u\$ '
 PS1="`green '\h'`:`blue '\W'` `green '\u\$'` "
-#PS1="`green $PS1` "
 PS1="[\$(parse_git_branch)] $PS1"
 
