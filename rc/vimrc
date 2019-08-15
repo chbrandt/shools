@@ -31,11 +31,15 @@ endif
 " want to use
 call plug#begin('~/.vim/plugged')
 
+Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'davidhalter/jedi-vim'
 Plug 'scrooloose/nerdtree'
+Plug 'davidhalter/jedi-vim'
+
 Plug 'https://github.com/machakann/vim-sandwich.git'
+Plug 'https://github.com/tpope/vim-commentary.git'
+
 Plug 'drewtempelmeyer/palenight.vim'
 
 call plug#end()
