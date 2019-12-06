@@ -131,7 +131,7 @@ ssh_joshua() {
 export PATH="${HOME}/local/bin:$PATH"
 
 # Aliases
-alias ls='ls -G'
+alias ls='ls --color'
 
 docker_clean() {
   docker ps -a | grep -v CONTAINER | awk '{print $1}' | xargs -n1 -I{} docker rm {}
@@ -148,4 +148,8 @@ function parse_git_branch {
 
 PS1="`green '\h'`:`blue '\W'` `green '\u\$'` "
 PS1="[\$(parse_git_branch)] $PS1"
+
+# Install Ruby Gems to ~/gems
+export GEM_HOME="$HOME/gems"
+export PATH="$HOME/gems/bin:$PATH"
 
