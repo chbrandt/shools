@@ -168,4 +168,7 @@ export PATH="/usr/local/opt/ruby/bin:$PATH"
 # For pkg-config to find ruby you may need to set:
 # export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
 
-export PATH="/Users/chbrandt/.gem/ruby/2.6.0/bin:${PATH}"
+# Install Ruby Gems to ~/gems
+export GEM_HOME="$HOME/gems"
+export PATH="$HOME/gems/bin:$PATH"
+
