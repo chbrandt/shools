@@ -2,6 +2,8 @@
 #    alias vim='nvim'
 #fi
 
+alias scn='screen'
+
 #source ~/env.rc
 
 # Resources
@@ -11,7 +13,7 @@ RESOURCES="${RESOURCES:-$HOME}"
 WIKIS="${RESOURCES}/wikis"
 
 # Repositories
-REPOS="${RESOURCES}/repositories"
+REPOS="${RESOURCES}/repos"
 
 # Python notebooks
 NOTEBOOKS="${REPOS}/docdatpie"
