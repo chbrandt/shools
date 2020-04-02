@@ -3,7 +3,7 @@ if [ `which nvim` ]; then
 fi
 
 # Conda
-conda activate _
+conda activate base_
 
 alias scn='screen'
 
