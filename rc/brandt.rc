@@ -5,6 +5,8 @@ fi
 # Conda
 conda activate _
 
+alias scn='screen'
+
 #source ~/env.rc
 
 # Resources
@@ -14,7 +16,7 @@ RESOURCES="${RESOURCES:-$HOME}"
 WIKIS="${RESOURCES}/wikis"
 
 # Repositories
-REPOS="${RESOURCES}/repositories"
+REPOS="${RESOURCES}/repos"
 
 # Python notebooks
 NOTEBOOKS="${REPOS}/docdatpie"
@@ -134,7 +136,7 @@ ssh_joshua() {
 export PATH="${HOME}/local/bin:$PATH"
 
 # Aliases
-alias ls='ls -G'
+alias ls='ls --color'
 
 docker_clean() {
   docker ps -a | grep -v CONTAINER | awk '{print $1}' | xargs -n1 -I{} docker rm {}
