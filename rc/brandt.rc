@@ -1,9 +1,8 @@
+#!/bin/bash
+
 if [ `which nvim` ]; then
     alias vim='nvim'
 fi
-
-# Conda
-conda activate _
 
 alias scn='screen'
 
@@ -116,22 +115,22 @@ red() {
   echo_color $red $text
 }
 
-# Automatically connect to eddie/joshua depending on the network I am (Sapienza/ASI)
-
-ssh_joshua() {
-  nc -z -G 1 joshua.icra.it 22 > /dev/null
-  if [[ "$?" -eq "0" ]]; then
-    ssh joshua.icra.it
-  else
-    nc -z -G 1 eddie.icra.it 80 > /dev/null
-    if [[ "$?" -eq "0" ]]; then
-      ssh -N -L 2222:joshua.icra.it:22 -p 80 eddie.icra.it
-    else
-      1>&2 echo "Nop! Neither 'joshua' nor 'eddie' are not available."
-      return 1
-    fi
-  fi
-}
+## Automatically connect to eddie/joshua depending on the network I am (Sapienza/ASI)
+#
+#ssh_joshua() {
+#  nc -z -G 1 joshua.icra.it 22 > /dev/null
+#  if [[ "$?" -eq "0" ]]; then
+#    ssh joshua.icra.it
+#  else
+#    nc -z -G 1 eddie.icra.it 80 > /dev/null
+#    if [[ "$?" -eq "0" ]]; then
+#      ssh -N -L 2222:joshua.icra.it:22 -p 80 eddie.icra.it
+#    else
+#      1>&2 echo "Nop! Neither 'joshua' nor 'eddie' are not available."
+#      return 1
+#    fi
+#  fi
+#}
 
 export PATH="${HOME}/local/bin:$PATH"
 
@@ -146,26 +145,26 @@ docker_clean_images() {
   docker images | grep '<none>' | awk '{print $3}' | xargs -n1 -I{} docker rmi {}
 }
 
-function parse_git_branch {
-  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-  echo "[${ref#refs/heads/}] "
-}
-
-if [[ -n "$STY" && -n "$WINDOW" ]]; then
-  PS1="`red '\h'`:`blue '\W'` `green '\u\$'` "
-else
-  PS1="`green '\h'`:`blue '\W'` `green '\u\$'` "
-fi
-PS1="\$(parse_git_branch)$PS1"
-
-# If you need to have ruby first in your PATH run:
-export PATH="/usr/local/opt/ruby/bin:$PATH"
-
-# For compilers to find ruby you may need to set:
-# export LDFLAGS="-L/usr/local/opt/ruby/lib"
-# export CPPFLAGS="-I/usr/local/opt/ruby/include"
-
-# For pkg-config to find ruby you may need to set:
-# export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
-
-export PATH="/Users/chbrandt/.gem/ruby/2.6.0/bin:${PATH}"
+#function parse_git_branch {
+#  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+#  echo "[${ref#refs/heads/}] "
+#}
+#
+#if [[ -n "$STY" && -n "$WINDOW" ]]; then
+#  PS1="`red '\h'`:`blue '\W'` `green '\u\$'` "
+#else
+#  PS1="`green '\h'`:`blue '\W'` `green '\u\$'` "
+#fi
+#PS1="\$(parse_git_branch)$PS1"
+#
+## If you need to have ruby first in your PATH run:
+#export PATH="/usr/local/opt/ruby/bin:$PATH"
+#
+## For compilers to find ruby you may need to set:
+## export LDFLAGS="-L/usr/local/opt/ruby/lib"
+## export CPPFLAGS="-I/usr/local/opt/ruby/include"
+#
+## For pkg-config to find ruby you may need to set:
+## export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
+#
+#export PATH="/Users/chbrandt/.gem/ruby/2.6.0/bin:${PATH}"
