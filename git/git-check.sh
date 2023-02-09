@@ -1,4 +1,33 @@
-#!/bin/bash -uex
+#!/bin/bash -ue
+
+# This is script is meant to be sourced:
+# > source git-check.sh
+#
+# It defines an equally named function 'git-check' that accepts one argument: 
+# - the path to where git repositories live in your system.
+# If none is given, the current working directory ($PWD) is used.
+#
+# Example:
+# ```
+# > source ~/rc/git-check.sh
+# > git-check $HOME/repos
+# Checking status of repositories in '/Users/chbrandt/repos/'
+# Fetching apaxy                [develop] ..        [Up-to-date]
+# Fetching chbrandt.github.io   [master] ..         [Pull updates]
+# Fetching dockeri              [master] ..         [Up-to-date]
+# Fetching jsonschema           [resolve_references] .. [Pull updates]
+# Fetching shoosh               [main] ..           [Push changes]
+# >
+# ```
+
+git-check() {
+  # Arguments:
+  # - Path to the directory where Git repositories are (eg, /home/user/repos). Default: "$PWD"
+  #
+  _git_check_repos "$@"
+}
+
+# ---
 
 _echo_color() {
   local color="$1"
@@ -86,8 +115,3 @@ _git_check_repos() {
     _git_check_repo "$REPO"
   done
 }
-
-git-check() {
-  _git_check_repos "$@"
-}
-
